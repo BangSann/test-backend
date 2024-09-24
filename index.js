@@ -14,15 +14,13 @@ app.get("/", (req, res) => {
     });
 });
 
-export const getDongeng = async (req, res) => {
-    try {
-      const response = await Dongeng.findAll();
-      return res.status(200).json(response);
-    } catch (err) {
-      return res.status(401).json({ message: err.message });
-    }
-  };
-
-app.get("/api/dongeng" , getDongeng)
+app.get("/api/dongeng", async (req , res) => {
+  try {
+    const response = await Dongeng.findAll();
+    return res.status(200).json(response);
+  } catch (err) {
+    return res.status(401).json({ message: err.message });
+  }
+});
 
 app.listen(3000);
