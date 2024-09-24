@@ -1,5 +1,6 @@
 import express from "express";
 import db from "./config/Database.js";
+import { getDongeng } from "./controller/DongengController.js";
 
 const app = express();
 
@@ -12,5 +13,7 @@ app.get("/", (req, res) => {
       res.send("Unable to connect to the database:", err);
     });
 });
+
+app.get("/api/dongeng" , getDongeng)
 
 app.listen(3000);
