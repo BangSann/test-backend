@@ -6,6 +6,6 @@ const app = express();
 app.get("/", (req, res) => {
     res.send("Hello World!");
 });
-// app.use(router)
+app.use(router)
 
 app.listen(3000);
