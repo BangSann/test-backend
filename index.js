@@ -1,6 +1,6 @@
 import express from "express";
 import db from "./config/Database.js";
-import { getDongeng } from "./controller/DongengController.js";
+import Dongeng from "./Models/DongengModel.js";
 
 const app = express();
 
@@ -13,6 +13,15 @@ app.get("/", (req, res) => {
       res.send("Unable to connect to the database:", err);
     });
 });
+
+export const getDongeng = async (req, res) => {
+    try {
+      const response = await Dongeng.findAll();
+      return res.status(200).json(response);
+    } catch (err) {
+      return res.status(401).json({ message: err.message });
+    }
+  };
 
 app.get("/api/dongeng" , getDongeng)
 
