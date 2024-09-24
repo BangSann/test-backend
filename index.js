@@ -1,6 +1,7 @@
 import express from "express";
 import db from "./config/Database.js";
 import Dongeng from "./Models/DongengModel.js";
+import { getDongeng } from "./controller/DongengController.js";
 
 const app = express();
 
@@ -14,13 +15,6 @@ app.get("/", (req, res) => {
     });
 });
 
-app.get("/api/dongeng", async (req , res) => {
-  try {
-    const response = await Dongeng.findAll();
-    return res.status(200).json(response);
-  } catch (err) {
-    return res.status(401).json({ message: err.message });
-  }
-});
+app.get("/api/dongeng", getDongeng);
 
 app.listen(3000);
