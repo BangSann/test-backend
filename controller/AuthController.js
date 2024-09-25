@@ -44,7 +44,7 @@ export const register = async (req, res) => {
       exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
     };
     const token = jwt.sign(payload, "8G6qA4ELVy4sBPnt24JK");
-    const link = `${"http://localhost:3000"}/verify?token=${token}`;
+    const link = `${"http://localhost:5173"}/verify?token=${token}`;
 
     let mailOptions = {
       from: "yosanokta12@gmail.com",
@@ -152,5 +152,19 @@ export const register = async (req, res) => {
     res.status(200).json(result);
   } catch (e) {
     res.status(500).json(e.message);
+  }
+};
+
+export const verify = async (req, res) => {
+  const { token } = req.query;
+  const decoded = jwt.verify(token, "8G6qA4ELVy4sBPnt24JK");
+  const dateNow = new Date().getTime() / 1000;
+  if (dateNow >= decoded.exp)
+    return res.status(410).json({ message: "verify is expired" });
+  try {
+    await User.update({ isActive: 1 }, { where: { id: decoded.id } });
+    return res.status(200).json({ message: "berhasil mengaktivasi akun!" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
   }
 };
