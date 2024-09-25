@@ -1,8 +1,6 @@
 import express from "express";
 import db from "./config/Database.js";
-import Dongeng from "./Models/DongengModel.js";
-import { getDongeng, getDongengById } from "./controller/DongengController.js";
-import { register } from "./controller/AuthController.js";
+import router from "./api/api.js";
 
 const app = express();
 
@@ -16,9 +14,7 @@ app.get("/", (req, res) => {
     });
 });
 
-app.get("/api/dongeng/:id", getDongengById);
-app.post("/api/register", register)
-app.get("/api/dongeng", getDongeng);
+app.use(router)
 
 // auth
 // app.post("/api/login", login);
