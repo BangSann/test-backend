@@ -23,4 +23,4 @@ app.get("/", (req, res) => {
 // auth
 // app.post("/api/login", login);
 
-app.listen(5000);
+app.listen(3000);
