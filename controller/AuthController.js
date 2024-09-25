@@ -6,6 +6,7 @@ import CryptoJS from "crypto-js"
 
 export const register = async (req, res) => {
   const { nama, username, email, password } = req.body;
+  console.log(req.body);
   let result = {
     email: {
       value: email,
@@ -27,7 +28,7 @@ export const register = async (req, res) => {
     const hashPassword = CryptoJS.SHA256(password).toString(CryptoJS.enc.Hex);
 
 
-    const refreshToken = jwt.sign(nama, env.JWT_REFRESH_SECRET);
+    const refreshToken = jwt.sign(nama, "8G6qA4ELVy4sBPnt24JK");
 
     await User.create({
       nama,
@@ -42,8 +43,8 @@ export const register = async (req, res) => {
       id: user.id,
       exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
     };
-    const token = jwt.sign(payload, process.env.JWT_SECRET);
-    const link = `${process.env.API_CLIENT}/verify?token=${token}`;
+    const token = jwt.sign(payload, "8G6qA4ELVy4sBPnt24JK");
+    const link = `${"http://localhost:3000"}/verify?token=${token}`;
 
     let mailOptions = {
       from: "yosanokta12@gmail.com",

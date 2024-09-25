@@ -3,6 +3,11 @@ import db from "./config/Database.js";
 import router from "./api/api.js";
 
 const app = express();
+app.use(express.json()); // For parsing application/json
+app.use(express.urlencoded({ extended: false })); // For parsing application/x-www-form-urlencoded
+
+
+app.use(router)
 
 app.get("/", (req, res) => {
   db.authenticate()
@@ -13,9 +18,6 @@ app.get("/", (req, res) => {
       res.send("Unable to connect to the database:", err);
     });
 });
-
-app.use(router)
-
 // auth
 // app.post("/api/login", login);
 
