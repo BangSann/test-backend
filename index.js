@@ -1,7 +1,7 @@
 import express from "express";
 import db from "./config/Database.js";
 import Dongeng from "./Models/DongengModel.js";
-import { getDongeng } from "./controller/DongengController.js";
+import { getDongeng, getDongengById } from "./controller/DongengController.js";
 
 const app = express();
 
@@ -15,6 +15,7 @@ app.get("/", (req, res) => {
     });
 });
 
+app.get("/api/dongeng/:id", getDongengById);
 app.get("/api/dongeng", getDongeng);
 
 app.listen(3000);
