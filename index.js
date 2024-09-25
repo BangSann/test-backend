@@ -22,7 +22,5 @@ app.get("/", (req, res) => {
       res.send("Unable to connect to the database:", err);
     });
 });
-// auth
-// app.post("/api/login", login);
 
 app.listen(3000);

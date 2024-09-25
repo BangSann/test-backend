@@ -168,3 +168,86 @@ export const verify = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+export const login = async (req, res) => {
+  var { credential, password } = req.body;
+  credential = credential?.toLowerCase();
+  let payload = {};
+  try {
+    const email = await User.findOne({ where: { email: credential } });
+    const username = await User.findOne({ where: { username: credential } });
+
+    if (email) {
+
+      if (email.isActive != 1) {
+        return res
+          .status(401)
+          .json({ message: "Email atau password salah!", status: false });
+      }
+
+      const passwordValidateEmail = (password, emailPassword) => {
+        const hashedPassword = CryptoJS.SHA256(password).toString(); // Hash the password using SHA256
+        return hashedPassword === emailPassword; // Compare the hashed password with the stored hash
+      };
+
+      if (!passwordValidateEmail(password , email.password)) {
+        return res
+          .status(401)
+          .json({ message: "Email atau password salah!pass", status: false });
+      }
+      payload = {
+        id: email.id,
+        role: email.role,
+        refreshToken: email.refreshToken,
+      };
+    } else if (username) {
+      // const passwordValidateUsername = await (
+      //   password,
+      //   username.password
+      // );
+
+      
+
+      if (username.isActive != 1) {
+        return res
+          .status(401)
+          .json({ message: "Email atau password salah!", status: false });
+      }
+
+      if (!passwordValidateEmail(password , username.password)) {
+        return res
+          .status(401)
+          .json({ message: "Email atau password salah!pass", status: false });
+      }
+      payload = {
+        id: username.id,
+        role: username.role,
+        refreshToken: username.refreshToken,
+      };
+
+    } else {
+      return res.status(401).json({
+        message: "Email atau password salah! Username/pass",
+        status: false,
+      });
+    }
+
+    return res.status(200).json({
+      data: {
+        id: payload.id,
+        status: true,
+      },
+      token: {
+        accessToken: getAccessToken(payload),
+        refreshToken: payload.refreshToken,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+function getAccessToken(user) {
+  return jwt.sign({ id: user.id }, "8G6qA4ELVy4sBPnt24JK", {
+    expiresIn: "1m",
+  });
+}
