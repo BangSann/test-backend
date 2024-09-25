@@ -10,7 +10,7 @@ app.use(express.urlencoded({ extended: false })); // For parsing application/x-w
 // app.use(cors());
 
 // app.use(express.static(path.resolve("./public")))
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join('public')));
 
 app.use(router)
 
