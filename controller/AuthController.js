@@ -251,3 +251,209 @@ function getAccessToken(user) {
     expiresIn: "1m",
   });
 }
+
+export const isAvailableUsername = async (req, res) => {
+  try {
+    const result = await User.findAll({
+      where: {
+        username: req.query.search,
+      },
+    });
+    return res
+      .status(200)
+      .json({ isAvailable: result.length > 0 ? false : true });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+export const isAvailableEmail = async (req, res) => {
+  try {
+    const result = await User.findAll({
+      where: {
+        email: req.query.search,
+      },
+    });
+    return res
+      .status(200)
+      .json({ isAvailable: result.length > 0 ? false : true });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+export const checkEmail = async (req, res) => {
+  try {
+    const result = await User.findAll({
+      where: {
+        email: req.query.search,
+      },
+    });
+    console.log(result);
+    return res
+      .status(200)
+      .json({ checkEmailExists: result.length > 0 ? true : false });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const forgotPasswordForm = async (req, res) => {
+  const { newPassword } = req.body;
+  const { token } = req.params;
+  const { id } = jwt.verify(token, "8G6qA4ELVy4sBPnt24JK");
+
+  console.log(id);
+  try {
+    const hashPassword = CryptoJS.SHA256(newPassword).toString(CryptoJS.enc.Hex);
+    await User.update({ password: hashPassword }, { where: { id } });
+    return res.status(200).json({ message: "Berhasil mengganti password" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const forgotPasswordSend = async (req, res) => {
+  const { email } = req.body;
+  const user = await User.findOne({ where: { email } });
+
+  if (!user) {
+    return res.status(400).json({ message: "Email tidak ditemukan" });
+  }
+
+  const payload = {
+    id: user.id,
+    exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
+  };
+  const token = jwt.sign(payload, "8G6qA4ELVy4sBPnt24JK");
+  const link = `${"http://localhost:5173"}/forgot-password?token=${token}`;
+
+  let mailOptions = {
+    from: "yosanokta12@gmail.com",
+    to: email,
+    subject: "Forgot Password",
+    text: "Forgot Password!",
+    html: `
+        <!DOCTYPE html>
+        <html lang="id">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Reset Password</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    background-color: #f4f4f4;
+                    color: #333;
+                    margin: 0;
+                    padding: 20px;
+                }
+                .container {
+                    max-width: 600px;
+                    margin: 0 auto;
+                    background-color: #ffffff;
+                    padding: 20px;
+                    border-radius: 10px;
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                }
+                .header {
+                    text-align: center;
+                    border-bottom: 1px solid #eeeeee;
+                    padding-bottom: 20px;
+                    margin-bottom: 20px;
+                }
+                .header h1 {
+                    font-size: 24px;
+                    margin: 0;
+                    color: #4CAF50;
+                }
+                .content {
+                    line-height: 1.6;
+                }
+                .content p {
+                    margin-bottom: 20px;
+                }
+                .button {
+                    text-align: center;
+                    margin-top: 30px;
+                }
+                .button a {
+                    background-color: #4CAF50;
+                    color: #ffffff;
+                    padding: 10px 20px;
+                    text-decoration: none;
+                    border-radius: 5px;
+                    font-weight: bold;
+                }
+                .button a:hover {
+                    background-color: #45a049;
+                }
+                .footer {
+                    margin-top: 30px;
+                    text-align: center;
+                    font-size: 12px;
+                    color: #777777;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <h1>Permintaan Reset Password</h1>
+                </div>
+                <div class="content">
+                    <p>Halo <strong>${email}</strong>,</p>
+                    <p>Kami menerima permintaan untuk mengatur ulang password akun Anda. Jika Anda tidak melakukan permintaan ini, silakan abaikan email ini.</p>
+                    <p>Untuk mengatur ulang password Anda, silakan klik tautan di bawah ini:</p>
+                    <div class="button">
+                        <a href="${link}">Reset Password</a>
+                    </div>
+                    <p>Tautan ini akan berlaku selama 24 jam. Setelah itu, Anda perlu mengajukan permintaan reset password lagi.</p>
+                    <p>Jika Anda mengalami kesulitan atau memiliki pertanyaan, jangan ragu untuk menghubungi tim dukungan kami.</p>
+                </div>
+                <div class="footer">
+                    <p>Terima kasih,</p>
+                    <p><strong>[Nama Perusahaan/Organisasi]</strong></p>
+                    <p>[Kontak Dukungan]</p>
+                </div>
+            </div>
+        </body>
+        </html>`,
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log("Error:", error);
+    } else {
+      console.log("Email terkirim: " + info.response);
+      res.status(200).json({message: 'Email terkirim'});
+    }
+  });
+};
+
+export const refreshNewToken = (req, res) => {
+  const refreshToken_user = req.body.refreshToken;
+  if (!refreshToken_user) {
+    return res.sendStatus(401);
+  } else {
+    jwt.verify(
+      refreshToken_user,
+      "9IoPkakk89JIKLadsDFT",
+      (err, user) => {
+        if (err) return res.sendStatus(403);
+        const accessToken = getAccessToken({ id: user.id });
+        return res.status(200).json({ accessToken: accessToken });
+      }
+    );
+  }
+};
+
+export const validJWT = (req, res) => {
+  try {
+    const { token } = req.params;
+    const decoded = jwt.verify(token, "8G6qA4ELVy4sBPnt24JK");
+    const dateNow = new Date().getTime() / 1000;
+    if (dateNow >= decoded.exp) return res.status(410).json({ status: false });
+    return res.status(200).json({ status: true });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};

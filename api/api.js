@@ -1,7 +1,7 @@
 import express from "express";
 // import Dongeng from "./Models/DongengModel.js";
 import { countAllView, countDongeng, getDongeng , getDongengById, popularView, sumView } from "../controller/DongengController.js";
-import { login, register, verify } from "../controller/AuthController.js";
+import { checkEmail, forgotPasswordForm, forgotPasswordSend, isAvailableEmail, isAvailableUsername, login, refreshNewToken, register, validJWT, verify } from "../controller/AuthController.js";
 import { getAllVisited, newVisited } from "../controller/visitedController.js";
 
 const router = express.Router();
@@ -24,6 +24,15 @@ router.get("/api/dongengview/:id" , sumView)
 router.post("/api/register", register);
 router.get("/api/verify", verify);
 router.post("/api/login", login);
+
+router.post("/api/auth/alreadyexist/email", isAvailableEmail);
+router.post("/api/auth/alreadyexist/username", isAvailableUsername);
+router.post("/api/auth/email", checkEmail);
+router.post("/api/forgot-password", forgotPasswordSend);
+router.post("/api/forgot-password/:token", forgotPasswordForm);
+router.post("/api/refresh-token", refreshNewToken);
+router.post("/api/isvalidtoken", validJWT);
+
 //auth - end
 
 export default router;
