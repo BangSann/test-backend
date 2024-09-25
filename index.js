@@ -8,6 +8,7 @@ app.use(express.json()); // For parsing application/json
 app.use(express.urlencoded({ extended: false })); // For parsing application/x-www-form-urlencoded
 app.use(cors());
 
+app.use(express.static("public"))
 
 app.use(router)
 
