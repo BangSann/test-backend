@@ -25,13 +25,13 @@ router.post("/api/register", register);
 router.get("/api/verify", verify);
 router.post("/api/login", login);
 
-router.post("/api/auth/alreadyexist/email", isAvailableEmail);
-router.post("/api/auth/alreadyexist/username", isAvailableUsername);
-router.post("/api/auth/email", checkEmail);
+router.get("/api/auth/alreadyexist/email", isAvailableEmail);
+router.get("/api/auth/alreadyexist/username", isAvailableUsername);
+router.get("/api/auth/email", checkEmail);
 router.post("/api/forgot-password", forgotPasswordSend);
 router.post("/api/forgot-password/:token", forgotPasswordForm);
 router.post("/api/refresh-token", refreshNewToken);
-router.post("/api/isvalidtoken", validJWT);
+router.get("/api/isvalidtoken/:token", validJWT);
 
 //auth - end
 
