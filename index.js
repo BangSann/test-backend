@@ -18,6 +18,14 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(express.static("public" , {
+  setHeaders: (res, path, stat) => {
+    if (path.endsWith(".pdf")) {
+      res.set("Content-Type", "application/pdf");
+    }
+  }
+}));
+
 
 app.use(router)
 
