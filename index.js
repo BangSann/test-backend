@@ -9,7 +9,13 @@ app.use(express.json()); // For parsing application/json
 app.use(express.urlencoded({ extended: false })); // For parsing application/x-www-form-urlencoded
 app.use(cors());
 
-app.use(express.static(path.resolve("./public")))
+app.use(express.static(path.resolve("./public") ,{
+  setHeaders: (res, path, stat) => {
+    if (path.endsWith(".pdf")) {
+      res.set("Content-Type", "application/pdf");
+    }
+  }
+}))
 // app.use(express.static(path.join('public')));
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -17,14 +23,6 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   next();
 });
-
-app.use(express.static("public" , {
-  setHeaders: (res, path, stat) => {
-    if (path.endsWith(".pdf")) {
-      res.set("Content-Type", "application/pdf");
-    }
-  }
-}));
 
 
 app.use(router)
