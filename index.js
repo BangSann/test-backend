@@ -9,7 +9,9 @@ import { fileURLToPath } from "url";
 const app = express();
 app.use(express.json()); // For parsing application/json
 app.use(express.urlencoded({ extended: false })); // For parsing application/x-www-form-urlencoded
-app.use(cors());
+app.use(cors({
+  origin : "https://ceritapanjikediri.my.id"
+}));
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
