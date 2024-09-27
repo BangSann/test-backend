@@ -2,7 +2,7 @@ import User from "../Models/UserModel.js";
 import jwt from "jsonwebtoken";
 import { transporter } from "../config/EmailSender.js";
 import { env } from "process";
-import CryptoJS from "crypto-js"
+import CryptoJS from "crypto-js";
 
 export const register = async (req, res) => {
   const { nama, username, email, password } = req.body;
@@ -26,7 +26,6 @@ export const register = async (req, res) => {
     }
 
     const hashPassword = CryptoJS.SHA256(password).toString(CryptoJS.enc.Hex);
-
 
     const refreshToken = jwt.sign(nama, "8G6qA4ELVy4sBPnt24JK");
 
@@ -178,7 +177,6 @@ export const login = async (req, res) => {
     const username = await User.findOne({ where: { username: credential } });
 
     if (email) {
-
       if (email.isActive != 1) {
         return res
           .status(401)
@@ -190,7 +188,7 @@ export const login = async (req, res) => {
         return hashedPassword === emailPassword; // Compare the hashed password with the stored hash
       };
 
-      if (!passwordValidateEmail(password , email.password)) {
+      if (!passwordValidateEmail(password, email.password)) {
         return res
           .status(401)
           .json({ message: "Email atau password salah!pass", status: false });
@@ -206,15 +204,13 @@ export const login = async (req, res) => {
       //   username.password
       // );
 
-      
-
       if (username.isActive != 1) {
         return res
           .status(401)
           .json({ message: "Email atau password salah!", status: false });
       }
 
-      if (!passwordValidateEmail(password , username.password)) {
+      if (!passwordValidateEmail(password, username.password)) {
         return res
           .status(401)
           .json({ message: "Email atau password salah!pass", status: false });
@@ -224,7 +220,6 @@ export const login = async (req, res) => {
         role: username.role,
         refreshToken: username.refreshToken,
       };
-
     } else {
       return res.status(401).json({
         message: "Email atau password salah! Username/pass",
@@ -303,7 +298,9 @@ export const forgotPasswordForm = async (req, res) => {
 
   console.log(id);
   try {
-    const hashPassword = CryptoJS.SHA256(newPassword).toString(CryptoJS.enc.Hex);
+    const hashPassword = CryptoJS.SHA256(newPassword).toString(
+      CryptoJS.enc.Hex
+    );
     await User.update({ password: hashPassword }, { where: { id } });
     return res.status(200).json({ message: "Berhasil mengganti password" });
   } catch (error) {
@@ -424,7 +421,7 @@ export const forgotPasswordSend = async (req, res) => {
       console.log("Error:", error);
     } else {
       console.log("Email terkirim: " + info.response);
-      res.status(200).json({message: 'Email terkirim'});
+      res.status(200).json({ message: "Email terkirim" });
     }
   });
 };
@@ -434,15 +431,11 @@ export const refreshNewToken = (req, res) => {
   if (!refreshToken_user) {
     return res.sendStatus(401);
   } else {
-    jwt.verify(
-      refreshToken_user,
-      "9IoPkakk89JIKLadsDFT",
-      (err, user) => {
-        if (err) return res.sendStatus(403);
-        const accessToken = getAccessToken({ id: user.id });
-        return res.status(200).json({ accessToken: accessToken });
-      }
-    );
+    jwt.verify(refreshToken_user, "9IoPkakk89JIKLadsDFT", (err, user) => {
+      if (err) return res.sendStatus(403);
+      const accessToken = getAccessToken({ id: user.id });
+      return res.status(200).json({ accessToken: accessToken });
+    });
   }
 };
 
@@ -456,4 +449,8 @@ export const validJWT = (req, res) => {
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
+};
+
+export const logout = async (req, res) => {
+  return res.status(200).json({ status: true, message: "Logout success" });
 };
