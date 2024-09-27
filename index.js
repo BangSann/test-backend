@@ -2,27 +2,34 @@ import express from "express";
 import db from "./config/Database.js";
 import router from "./api/api.js";
 import cors from "cors";
+import { dirname } from "path";
 import path from "path";
+import { fileURLToPath } from "url";
 
 const app = express();
 app.use(express.json()); // For parsing application/json
 app.use(express.urlencoded({ extended: false })); // For parsing application/x-www-form-urlencoded
 app.use(cors());
 
-app.use(express.static(path.resolve("./public")));
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// app.use(express.static(path.resolve("./public")));
+app.use(express.static(path.join(__dirname, "public")));
+
+// app.use((req, res, next) => {
+//   if (req.url.endsWith(".js")) {
+//     res.setHeader("Content-Type", "application/javascript");
+//   }
+//   next();
+// });
+// app.use((req, res, next) => {
+//   res.setHeader("Content-Type", "application/javascript");
+//   next();
+// });
+
 app.use((req, res, next) => {
-  if (req.url.endsWith(".js")) {
-    res.setHeader("Content-Type", "application/javascript");
-  }
-  next();
-});
-app.use((req, res, next) => {
-  res.setHeader("Content-Type", "application/javascript");
-  next();
-});
-// app.use(express.static(path.join('public')));
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  // res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
   res.header(
     "Access-Control-Allow-Headers",
