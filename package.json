@@ -18,6 +18,7 @@
     "mysql2": "^3.11.3",
     "nodemailer": "^6.9.15",
     "pdf-poppler": "^0.2.1",
-    "sequelize": "^6.37.3"
+    "sequelize": "^6.37.3",
+    "uuid": "^10.0.0"
   }
 }
