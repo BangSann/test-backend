@@ -25,60 +25,40 @@ import { getAllVisited, newVisited } from "../controller/visitedController.js";
 import { getUserByID } from "../controller/UserController.js";
 import accessValidation from "../middleware/authorization.js";
 import { createSoalPilgan, createSoalUraianPanjang, createSoalUraianSingkat, deleteSoalPilgan, deleteSoalUraianPanjang, deleteSoalUraianSingkat, getSoalPilgan, getSoalUraianPanjang, getSoalUraianSingkat, updateSoalPilgan, updateSoalUraianPanjang, updateSoalUraianSingkat } from "../controller/soalController.js";
+import { createQuiz, deleteQuiz, getAllQuiz, getQuizById, updateQuiz } from "../controller/quizController.js";
+import { getRekapByForumId, joinForumByToken, updateNilaiQuiz } from "../controller/forumController.js";
 
 const router = express.Router();
 
+// Forum Quiz
+router.get("/api/get-all-quiz", getAllQuiz);
+router.post("/api/create-quiz", accessValidation, createQuiz);
+router.delete("/api/delete-quiz/:id", accessValidation, deleteQuiz);
+router.patch("/api/update-quiz/:id", accessValidation, updateQuiz);
+router.get("/api/get-quiz/:id", accessValidation, getQuizById);
+// Forum Quiz - End
+
+// Quiz
+router.get("/api/get-rekap/:id_forum", getRekapByForumId);
+router.post("/api/join-forum", accessValidation, joinForumByToken);
+router.post("/api/update-nilai-quiz", accessValidation, updateNilaiQuiz);
+// Quiz - End
+
 // Soal
+router.get("/api/get-soal-pilgan", getSoalPilgan);
 router.post("/api/set-soal-pilgan", accessValidation, createSoalPilgan);
-router.get("/api/get-soal-pilgan", accessValidation, getSoalPilgan);
-router.delete(
-  "/api/delete-soal-pilgan/:id",
-  accessValidation,
-  deleteSoalPilgan
-);
+router.delete("/api/delete-soal-pilgan/:id",accessValidation,deleteSoalPilgan);
 router.patch("/api/update-soal-pilgan/:id", accessValidation, updateSoalPilgan);
 
-router.get(
-  "/api/get-soal-uraian-singkat",
-  accessValidation,
-  getSoalUraianSingkat
-);
-router.post(
-  "/api/set-soal-uraian-singkat",
-  accessValidation,
-  createSoalUraianSingkat
-);
-router.delete(
-  "/api/delete-soal-uraian-singkat/:id",
-  accessValidation,
-  deleteSoalUraianSingkat
-);
-router.patch(
-  "/api/update-soal-uraian-singkat/:id",
-  accessValidation,
-  updateSoalUraianSingkat
-);
+router.get("/api/get-soal-uraian-singkat",getSoalUraianSingkat);
+router.post("/api/set-soal-uraian-singkat",accessValidation,createSoalUraianSingkat);
+router.delete("/api/delete-soal-uraian-singkat/:id",accessValidation,deleteSoalUraianSingkat);
+router.patch("/api/update-soal-uraian-singkat/:id",accessValidation,updateSoalUraianSingkat);
 
-router.get(
-  "/api/get-soal-uraian-panjang",
-  accessValidation,
-  getSoalUraianPanjang
-);
-router.post(
-  "/api/set-soal-uraian-panjang",
-  accessValidation,
-  createSoalUraianPanjang
-);
-router.delete(
-  "/api/delete-soal-uraian-panjang/:id",
-  accessValidation,
-  deleteSoalUraianPanjang
-);
-router.patch(
-  "/api/update-soal-uraian-panjang/:id",
-  accessValidation,
-  updateSoalUraianPanjang
-);
+router.get("/api/get-soal-uraian-panjang",getSoalUraianPanjang);
+router.post("/api/set-soal-uraian-panjang",accessValidation,createSoalUraianPanjang);
+router.delete("/api/delete-soal-uraian-panjang/:id",accessValidation,deleteSoalUraianPanjang);
+router.patch("/api/update-soal-uraian-panjang/:id",accessValidation,updateSoalUraianPanjang);
 // Soal - end
 
 // Users
