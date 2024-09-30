@@ -63,6 +63,12 @@ router.patch("/api/update-soal-uraian-panjang/:id",accessValidation,updateSoalUr
 
 // Users
 router.get("/api/users/:id",accessValidation, getUserByID);
+router.get("/api/profile/:token", profile);
+router.post("/api/profile/update/:id", accessValidation, updateProfile);
+router.get("/api/users", accessValidation, getUser);
+router.post("/api/users", accessValidation, createUser);
+router.patch("/api/users/:id", updateUser);
+router.delete("/api/users/:id", accessValidation, deleteUser);
 // users - end
 
 // skripsi

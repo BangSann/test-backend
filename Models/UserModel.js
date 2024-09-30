@@ -1,6 +1,6 @@
 import { Sequelize, DataTypes } from "sequelize";
 import db from "../config/Database.js";
-// import history from "./historyModel.js";
+import history from "./historyModel.js";
 
 const User = db.define("users",
     {
@@ -32,9 +32,10 @@ const User = db.define("users",
 )
 
     
-// User.hasMany(history, {
-//     foreignKey: "id_user",
-// });
+User.hasMany(history, {
+    foreignKey: "id_user",
+    sourceKey: "id",
+});
 
 
 const loginModel = async (email, password) => {
@@ -55,7 +56,7 @@ const loginModel = async (email, password) => {
 }
 
 export default User;
-// export {  }
+export { loginModel }
 
 (async () => {
     await db.sync()
