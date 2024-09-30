@@ -20,9 +20,10 @@ import {
   register,
   validJWT,
   verify,
+  updateProfile
 } from "../controller/AuthController.js";
 import { getAllVisited, newVisited } from "../controller/visitedController.js";
-import { getUserByID, profile, updateProfile, getUser, createUser, updateUser, deleteUser } from "../controller/UserController.js";
+import { getUserByID, profile, getUser, createUser, updateUser, deleteUser } from "../controller/UserController.js";
 import accessValidation from "../middleware/authorization.js";
 import { createSoalPilgan, createSoalUraianPanjang, createSoalUraianSingkat, deleteSoalPilgan, deleteSoalUraianPanjang, deleteSoalUraianSingkat, getSoalPilgan, getSoalUraianPanjang, getSoalUraianSingkat, updateSoalPilgan, updateSoalUraianPanjang, updateSoalUraianSingkat } from "../controller/soalController.js";
 import { createQuiz, deleteQuiz, getAllQuiz, getQuizById, updateQuiz } from "../controller/quizController.js";
