@@ -16,14 +16,14 @@ const history = db.define(
         id_user: {
             type: Sequelize.INTEGER,
             references:{
-                model: User,
+                model: "User",
                 key: "id"
             }
         }, 
         id_dongeng : {
             type: Sequelize.INTEGER, 
             references : {
-                model: Dongeng,
+                model: "Dongeng",
                 key:"id"
             }
         }
