@@ -181,9 +181,14 @@ export const verify = async (req, res) => {
 
 export const login = async (req, res) => {
   var { credential, password } = req.body;
+  console.log(credential)
   credential = credential?.toLowerCase();
   let payload = {};
+  
+  
   try {
+    
+    
     const email = await User.findOne({ where: { email: credential } });
     const username = await User.findOne({ where: { username: credential } });
 
@@ -193,11 +198,11 @@ export const login = async (req, res) => {
           .status(401)
           .json({ message: "Email atau password salah!", status: false });
       }
-
       const passwordValidateEmail = (password, emailPassword) => {
         const hashedPassword = CryptoJS.SHA256(password).toString(); // Hash the password using SHA256
         return hashedPassword === emailPassword; // Compare the hashed password with the stored hash
       };
+
 
       if (!passwordValidateEmail(password, email.password)) {
         return res
@@ -221,7 +226,12 @@ export const login = async (req, res) => {
           .json({ message: "Email atau password salah!", status: false });
       }
 
-      if (!passwordValidateEmail(password, username.password)) {
+      const passwordValidateUsername = (password, usernamePassword) => {
+        const hashedPassword = CryptoJS.SHA256(password).toString(); // Hash the password using SHA256
+        return hashedPassword === usernamePassword; // Compare the hashed password with the stored hash
+      };
+
+      if (!passwordValidateUsername(password, username.password)) {
         return res
           .status(401)
           .json({ message: "Email atau password salah!pass", status: false });
@@ -252,6 +262,7 @@ export const login = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 function getAccessToken(user) {
   return jwt.sign({ id: user.id }, "8G6qA4ELVy4sBPnt24JK", {
     expiresIn: "1m",
