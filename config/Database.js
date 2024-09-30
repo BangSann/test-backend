@@ -3,7 +3,7 @@ import mysql from "mysql2";
 
 const db = new Sequelize("u216976409_dongeng", "u216976409_CVSrikandiKr", "e2J0sR+Q",{
 //   password: "@W34@h9Z",
-  host: "154.41.240.52:3306",
+  host: "154.41.240.52",
   dialect: "mysql",
   dialectModule: mysql,
 });
