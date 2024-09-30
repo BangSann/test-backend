@@ -39,23 +39,10 @@ app.use(express.urlencoded({ extended: false })); // For parsing application/x-w
 //   next();
 // });
 
-const allowedOrigins = ['http://localhost:5173', 'https://ceritapanjikediri.my.id'];
-
 app.use(cors({
-  origin: function (origin, callback) {
-    if (allowedOrigins.includes(origin) || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true, // Allow cookies or authentication headers
+  origin: 'https://ceritapanjikediri.my.id', // Izinkan origin ini
+  credentials: true, // Izinkan kredensial jika diperlukan (untuk cookies atau header otentikasi)
 }));
-
-app.get('/pdf/:fileName', (req, res) => {
-  // Serve your file, e.g., KEONG MAS.pdf
-  res.sendFile(`path/to/your/pdf/${req.params.fileName}`);
-});
 
 app.use(router);
 
