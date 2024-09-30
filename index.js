@@ -16,17 +16,6 @@ const __dirname = dirname(__filename);
 
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use((req, res, next) => {
-  if (req.url.endsWith(".js")) {
-    res.setHeader("Content-Type", "application/javascript");
-  }
-  next();
-});
-app.use((req, res, next) => {
-  res.setHeader("Content-Type", "application/javascript");
-  next();
-});
-
 // app.use((req, res, next) => {
 //   res.setHeader("Access-Control-Allow-Origin", "*");
 //   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
