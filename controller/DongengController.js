@@ -1,5 +1,4 @@
 import Dongeng from "../Models/DongengModel.js";
-import { path } from "pdf-poppler";
 
 export const getDongeng = async (req, res) => {
   try {
