@@ -114,87 +114,87 @@ export const createDongeng = async (req, res) => {
   })
 }
 
-// export const deleteDongeng = async (req, res) => {
-//   const item = await Dongeng.findOne({
-//     where: {
-//       id: req.params.id,
-//     },
-//   });
-//   // console.log(item);
-//   if (!item)
-//     return res.status(404).json({ message: "Dongeng tidak ditemukan!" });
-//   try {
-//     const {filename} = item;
-//     fs.unlinkSync(`./public/img/${filename}`);
-//     await item.destroy({
-//       where: req.params.id,
-//     });
-//     res.status(200).json({ message: "Dongeng berhasil dihapus!" });
-//   } catch (error) {
-//     return res.status(500).json({ message: error.message });
-//   }
-// };
+export const deleteDongeng = async (req, res) => {
+  const item = await Dongeng.findOne({
+    where: {
+      id: req.params.id,
+    },
+  });
+  // console.log(item);
+  if (!item)
+    return res.status(404).json({ message: "Dongeng tidak ditemukan!" });
+  try {
+    const {filename} = item;
+    fs.unlinkSync(`./public/img/${filename}`);
+    await item.destroy({
+      where: req.params.id,
+    });
+    res.status(200).json({ message: "Dongeng berhasil dihapus!" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
 
 
 // // title:varchar, pdfURL:varchar, cover:varchar, filename:varchar
-// export const updateDongeng = async (req, res) => {
-//   const {title, pdfURL} = req.body
-//   const item = await Dongeng.findOne({
-//     where: {
-//       id: req.params.id,
-//     },
-//   });
+export const updateDongeng = async (req, res) => {
+  const {title, pdfURL} = req.body
+  const item = await Dongeng.findOne({
+    where: {
+      id: req.params.id,
+    },
+  });
 
-//   if (!item) {
-//     return res.status(404).json({ message: "Dongeng tidak ditemukan" });
-//   }
+  if (!item) {
+    return res.status(404).json({ message: "Dongeng tidak ditemukan" });
+  }
   
 
-//   if (!req.files.cover) {
-//     try{
-//       await item.update({
-//         title,
-//         pdfURL
-//       });
-//       res.status(200).json({ message: "Dongeng Berhasil diperbarui" });
-//     }catch(error){
-//       res.status(500).json({error: error.message})
-//     }
+  if (!req.files.cover) {
+    try{
+      await item.update({
+        title,
+        pdfURL
+      });
+      res.status(200).json({ message: "Dongeng Berhasil diperbarui" });
+    }catch(error){
+      res.status(500).json({error: error.message})
+    }
     
-//   } else {
-//     const cover = req.files.cover;
-//     const ext = path.extname(cover.name);
+  } else {
+    const cover = req.files.cover;
+    const ext = path.extname(cover.name);
 
-//     const alowedTypes = [".png", ".jpeg", ".jpg", ".webp", ".svg"];
+    const alowedTypes = [".png", ".jpeg", ".jpg", ".webp", ".svg"];
 
-//     if (!alowedTypes.includes(ext.toLowerCase())) {
-//       return res.status(422).json({ message: "File Tidak Valid" });
-//     }
+    if (!alowedTypes.includes(ext.toLowerCase())) {
+      return res.status(422).json({ message: "File Tidak Valid" });
+    }
 
-//     try {
-//       const newFilename = new Date().toISOString().replace(/[-:.]/g, "");
-//       const newFilenameWExt = `${newFilename}.${ext}`
+    try {
+      const newFilename = new Date().toISOString().replace(/[-:.]/g, "");
+      const newFilenameWExt = `${newFilename}${ext}`
 
-//       file.mv(`./public/img/${newFilenameWExt}`, async (err) => {
-//         if (err) {
-//           return res.status(500).json({ message: err.message });
-//         }
+      file.mv(`./public/img/${newFilenameWExt}`, async (err) => {
+        if (err) {
+          return res.status(500).json({ message: err.message });
+        }
 
         
-//         fs.unlinkSync(`./public/img/${item.filename}`);
+        fs.unlinkSync(`./public/img/${item.filename}`);
 
-//         await item.update({
-//           title: req.body.title,
-//           pdfURL,
-//           cover: `${req.protocol}://${req.get("host")}/img/${item.filename}`,
-//           fileName: newFilenameWExt,
-//         });
+        await item.update({
+          title: req.body.title,
+          pdfURL,
+          cover: `${req.protocol}://${req.get("host")}/img/${item.filename}`,
+          fileName: newFilenameWExt,
+        });
 
-//         res.status(200).json({ message: "Dongeng berhasil di perbarui!" });
-//       });
-//     } catch (err) {
-//       return res.json(500).json({ message: err.message });
-//     }
-//   }
-// };
+        res.status(200).json({ message: "Dongeng berhasil di perbarui!" });
+      });
+    } catch (err) {
+      return res.json(500).json({ message: err.message });
+    }
+  }
+};
 

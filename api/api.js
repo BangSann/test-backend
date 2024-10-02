@@ -4,10 +4,12 @@ import {
   countAllView,
   countDongeng,
   createDongeng,
+  deleteDongeng,
   getDongeng,
   getDongengById,
   popularView,
   sumView,
+  updateDongeng,
 } from "../controller/DongengController.js";
 import {
   checkEmail,
@@ -86,6 +88,8 @@ router.get("/api/count/view", countAllView);
 router.get("/api/popular", popularView);
 router.get("/api/dongengview/:id", sumView);
 router.post("/api/dongeng" , createDongeng)
+router.delete("/api/dongeng/:id" , deleteDongeng)
+router.patch("/api/dongeng/:id" , updateDongeng)
 //dongeng - end
 
 //auth
