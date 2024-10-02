@@ -1,5 +1,6 @@
 import path from "path";
 import Dongeng from "../Models/DongengModel.js";
+import fs from "node:fs"
 
 export const getDongeng = async (req, res) => {
   try {
@@ -149,8 +150,9 @@ export const updateDongeng = async (req, res) => {
     return res.status(404).json({ message: "Dongeng tidak ditemukan" });
   }
   
+  const {cover} = req.files
 
-  if (!req.files.cover) {
+  if (!cover) {
     try{
       await item.update({
         title,
