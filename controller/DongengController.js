@@ -133,7 +133,7 @@ export const deleteDongeng = async (req, res) => {
     return res.status(404).json({ message: "Dongeng tidak ditemukan!" });
   try {
     const { filename } = item;
-    fs.unlinkSync(`./public/img/${filename}`);
+    fs.unlinkSync(`/img/${filename}`);
     await item.destroy({
       where: req.params.id,
     });
