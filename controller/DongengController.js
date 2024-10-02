@@ -75,41 +75,41 @@ export const sumView = async (req, res) => {
 // isian column
 // title:varchar, pdfURL:varchar, cover:varchar, filename:varchar
 
-// export const createDongeng = async (req, res) => {
-//   // request POST title, pdfURL, cover
-//   const {title, pdfURL} = req.body
+export const createDongeng = async (req, res) => {
+  // request POST title, pdfURL, cover
+  const {title, pdfURL} = req.body
 
-//   // file
-//   const {cover} = req.files
-//   const ext = path.extname(cover.name)
+  // file
+  const {cover} = req.files
+  const ext = path.extname(cover.name)
 
-//   if (cover === null) {
-//     return res.status(400).json({ message: "Tidak ada file yang di upload" });
-//   }
+  if (cover === null) {
+    return res.status(400).json({ message: "Tidak ada file yang di upload" });
+  }
 
-//   const alowedTypes = [".png", ".jpeg", ".jpg", ".webp", ".svg"];
+  const alowedTypes = [".png", ".jpeg", ".jpg", ".webp", ".svg"];
 
-//   if (!alowedTypes.includes(ext.toLowerCase())) {
-//     return res.status(422).json({ message: "File Tidak Valid" });
-//   }
+  if (!alowedTypes.includes(ext.toLowerCase())) {
+    return res.status(422).json({ message: "File Tidak Valid" });
+  }
 
-//   // new filename
-//   let newFilename = new Date().toISOString().replace(/[-:.]/g, "");
-//   const newFilenameWExt = `${newFilename}.${ext}`
+  // new filename
+  let newFilename = new Date().toISOString().replace(/[-:.]/g, "");
+  const newFilenameWExt = `${newFilename}.${ext}`
 
-//   cover.mv(`./public/img/${newFilename}`, async (err) => {
-//     if (err) {
-//       return res.status(500).json({ message: err.message });
-//     }
-//     const path = `${req.protocol}://${req.get("host")}/public/img/${newFilenameWExt}`; // Ganti dengan path ke file PDF Anda
-//     try{
-//       await Dongeng.create({title:title, pdfURL:pdfURL, cover:path, filename:newFilenameWExt})
-//       return res.status(200).json({message: "berhasil menambah dongeng!"})
-//     }catch(error){
-//       return res.status(500).json({error: error.message})
-//     }
-//   })
-// }
+  cover.mv(`./public/img/${newFilename}`, async (err) => {
+    if (err) {
+      return res.status(500).json({ message: err.message });
+    }
+    const path = `${req.protocol}://${req.get("host")}/public/img/${newFilenameWExt}`; // Ganti dengan path ke file PDF Anda
+    try{
+      await Dongeng.create({title:title, pdfURL:pdfURL, cover:path, filename:newFilenameWExt})
+      return res.status(200).json({message: "berhasil menambah dongeng!"})
+    }catch(error){
+      return res.status(500).json({error: error.message})
+    }
+  })
+}
 
 // export const deleteDongeng = async (req, res) => {
 //   const item = await Dongeng.findOne({

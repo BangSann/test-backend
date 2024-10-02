@@ -3,6 +3,7 @@ import express from "express";
 import {
   countAllView,
   countDongeng,
+  createDongeng,
   getDongeng,
   getDongengById,
   popularView,
@@ -84,6 +85,7 @@ router.get("/api/count/dongeng", countDongeng);
 router.get("/api/count/view", countAllView);
 router.get("/api/popular", popularView);
 router.get("/api/dongengview/:id", sumView);
+router.post("/api/dongeng" , createDongeng)
 //dongeng - end
 
 //auth
