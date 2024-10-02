@@ -1,6 +1,6 @@
 import path from "path";
 import Dongeng from "../Models/DongengModel.js";
-import fs from "node:fs"
+import fs from "node:fs";
 
 export const getDongeng = async (req, res) => {
   try {
@@ -79,11 +79,11 @@ export const sumView = async (req, res) => {
 
 export const createDongeng = async (req, res) => {
   // request POST title, pdfURL, cover
-  const {title, pdfURL} = req.body
+  const { title, pdfURL } = req.body;
 
   // file
-  const {cover} = req.files
-  const ext = path.extname(cover.name)
+  const { cover } = req.files;
+  const ext = path.extname(cover.name);
 
   if (cover === null) {
     return res.status(400).json({ message: "Tidak ada file yang di upload" });
@@ -97,23 +97,30 @@ export const createDongeng = async (req, res) => {
 
   // new filename
   let newFilename = new Date().toISOString().replace(/[-:.]/g, "");
-  const newFilenameWExt = `${newFilename}${ext}`
+  const newFilenameWExt = `${newFilename}${ext}`;
 
   console.log(newFilenameWExt);
 
-  cover.mv(`./public/img/${newFilename}`, async (err) => {
+  cover.mv(`./public/img/${newFilenameWExt}`, async (err) => {
     if (err) {
       return res.status(500).json({ message: err.message });
     }
-    const path = `${req.protocol}://${req.get("host")}/public/img/${newFilenameWExt}`; // Ganti dengan path ke file PDF Anda
-    try{
-      await Dongeng.create({title:title, pdfURL:pdfURL, cover:path, filename:newFilenameWExt})
-      return res.status(200).json({message: "berhasil menambah dongeng!"})
-    }catch(error){
-      return res.status(500).json({error: error.message})
+    const path = `${req.protocol}://${req.get(
+      "host"
+    )}/public/img/${newFilenameWExt}`; // Ganti dengan path ke file PDF Anda
+    try {
+      await Dongeng.create({
+        title: title,
+        pdfURL: pdfURL,
+        cover: path,
+        filename: newFilenameWExt,
+      });
+      return res.status(200).json({ message: "berhasil menambah dongeng!" });
+    } catch (error) {
+      return res.status(500).json({ error: error.message });
     }
-  })
-}
+  });
+};
 
 export const deleteDongeng = async (req, res) => {
   const item = await Dongeng.findOne({
@@ -125,7 +132,7 @@ export const deleteDongeng = async (req, res) => {
   if (!item)
     return res.status(404).json({ message: "Dongeng tidak ditemukan!" });
   try {
-    const {filename} = item;
+    const { filename } = item;
     fs.unlinkSync(`./public/img/${filename}`);
     await item.destroy({
       where: req.params.id,
@@ -136,10 +143,9 @@ export const deleteDongeng = async (req, res) => {
   }
 };
 
-
 // // title:varchar, pdfURL:varchar, cover:varchar, filename:varchar
 export const updateDongeng = async (req, res) => {
-  const {title, pdfURL} = req.body
+  const { title, pdfURL } = req.body;
   const item = await Dongeng.findOne({
     where: {
       id: req.params.id,
@@ -149,20 +155,19 @@ export const updateDongeng = async (req, res) => {
   if (!item) {
     return res.status(404).json({ message: "Dongeng tidak ditemukan" });
   }
-  
-  const {cover} = req.files
+
+  const { cover } = req.files;
 
   if (!cover) {
-    try{
+    try {
       await item.update({
         title,
-        pdfURL
+        pdfURL,
       });
       res.status(200).json({ message: "Dongeng Berhasil diperbarui" });
-    }catch(error){
-      res.status(500).json({error: error.message})
+    } catch (error) {
+      res.status(500).json({ error: error.message });
     }
-    
   } else {
     const cover = req.files.cover;
     const ext = path.extname(cover.name);
@@ -175,14 +180,13 @@ export const updateDongeng = async (req, res) => {
 
     try {
       const newFilename = new Date().toISOString().replace(/[-:.]/g, "");
-      const newFilenameWExt = `${newFilename}${ext}`
+      const newFilenameWExt = `${newFilename}${ext}`;
 
-      file.mv(`./public/img/${newFilenameWExt}`, async (err) => {
+      cover.mv(`./public/img/${newFilenameWExt}`, async (err) => {
         if (err) {
           return res.status(500).json({ message: err.message });
         }
 
-        
         fs.unlinkSync(`./public/img/${item.filename}`);
 
         await item.update({
@@ -199,4 +203,3 @@ export const updateDongeng = async (req, res) => {
     }
   }
 };
-
