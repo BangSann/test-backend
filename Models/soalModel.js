@@ -111,14 +111,6 @@ export const SoalUraianPanjang = db.define(
 
 export default SoalPilgan;
 
-db.sync({ force: false }) // `force: false` ensures that tables are not dropped and recreated if they already exist
-.then(() => {
-  console.log("Database & tables created!");
-})
-.catch((error) => {
-  console.error("Error creating tables:", error);
-});
-
 
 SoalPilgan.belongsTo(Dongeng, { foreignKey: "idDongeng" });
 Dongeng.hasMany(SoalPilgan, { foreignKey: "idDongeng" });

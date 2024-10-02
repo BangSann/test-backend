@@ -1,6 +1,7 @@
 import User from "../Models/UserModel.js";
 import jwt from "jsonwebtoken";
 import histories from "../Models/historyModel.js";
+import CryptoJS from "crypto-js";
 
 export const getHistory = async (req, res) => {
   const targetUserId = parseInt(req.params.id)
