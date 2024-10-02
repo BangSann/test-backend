@@ -4,12 +4,16 @@ import router from "./api/api.js";
 import cors from "cors";
 import { dirname } from "path";
 import path from "path";
+import fileupload from "express-fileupload"
 import { fileURLToPath } from "url";
 
 const app = express();
 app.use(express.json()); // For parsing application/json
 app.use(express.urlencoded({ extended: false })); // For parsing application/x-www-form-urlencoded
 app.use(cors());
+app.use(fileupload({
+  createParentPath: true
+}))
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

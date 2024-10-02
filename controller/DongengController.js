@@ -1,3 +1,4 @@
+import path from "path";
 import Dongeng from "../Models/DongengModel.js";
 
 export const getDongeng = async (req, res) => {
@@ -95,7 +96,9 @@ export const createDongeng = async (req, res) => {
 
   // new filename
   let newFilename = new Date().toISOString().replace(/[-:.]/g, "");
-  const newFilenameWExt = `${newFilename}.${ext}`
+  const newFilenameWExt = `${newFilename}${ext}`
+
+  console.log(newFilenameWExt);
 
   cover.mv(`./public/img/${newFilename}`, async (err) => {
     if (err) {

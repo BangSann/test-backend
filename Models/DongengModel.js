@@ -32,7 +32,7 @@ const Dongeng = db.define(
     title: DataTypes.STRING,
     pdfURL: DataTypes.STRING,
     cover: DataTypes.STRING,
-    fileName: DataTypes.STRING,
+    filename: DataTypes.STRING,
     view: DataTypes.INTEGER,
   },
   { freezeTableName: true }
