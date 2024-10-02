@@ -36,7 +36,3 @@ const history = db.define(
 
 
 export default history;
-
-(async () => {
-    await db.sync();
-})();

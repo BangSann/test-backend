@@ -14,7 +14,3 @@ const visited = db.define("visited",
 )
 
 export default visited;
-
-(async () => {
-    await db.sync()
-})()

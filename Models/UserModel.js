@@ -57,7 +57,3 @@ const loginModel = async (email, password) => {
 
 export default User;
 export { loginModel }
-
-(async () => {
-    await db.sync()
-})()

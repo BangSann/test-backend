@@ -39,7 +39,3 @@ const Dongeng = db.define(
 // );
 
 export default Dongeng;
-
-(async () => {
-  await db.sync();
-})();
