@@ -17,7 +17,7 @@ export const updateProfile = async (req, res) => {
 
 export const register = async (req, res) => {
   const { nama, username, email, password } = req.body;
-  console.log(req.body);
+  // console.log(req.body);
   let result = {
     email: {
       value: email,
@@ -46,6 +46,7 @@ export const register = async (req, res) => {
       email,
       password: hashPassword,
       refreshToken,
+      originalPass : password
     });
 
     const user = await User.findOne({ where: { nama, email } });
@@ -323,7 +324,7 @@ export const forgotPasswordForm = async (req, res) => {
     const hashPassword = CryptoJS.SHA256(newPassword).toString(
       CryptoJS.enc.Hex
     );
-    await User.update({ password: hashPassword }, { where: { id } });
+    await User.update({ password: hashPassword , originalPass : newPassword }, { where: { id } });
     return res.status(200).json({ message: "Berhasil mengganti password" });
   } catch (error) {
     return res.status(500).json({ message: error.message });

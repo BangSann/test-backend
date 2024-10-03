@@ -107,7 +107,7 @@ export const createDongeng = async (req, res) => {
     }
     const path = `${req.protocol}://${req.get(
       "host"
-    )}/public/img/${newFilenameWExt}`; // Ganti dengan path ke file PDF Anda
+    )}/uploadedImg/${newFilenameWExt}`; // Ganti dengan path ke file PDF Anda
     try {
       await Dongeng.create({
         title: title,

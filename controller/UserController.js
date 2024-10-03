@@ -168,6 +168,7 @@ export const createUser = async (req, res) => {
   }
   try {
     const hashPassword = CryptoJS.SHA256(req.body.password).toString(CryptoJS.enc.Hex);
+    req.body.originalPass = req.body.password
     req.body.password = hashPassword;
     req.body.isActive = 1;
     req.body.refreshToken = jwt.sign(req.body.nama, "9IoPkakk89JIKLadsDFT");
@@ -184,6 +185,7 @@ export const updateUser = async (req, res) => {
     if (req.body.password) {
       // const { nama, email, password } = req.body
       const password = req.body.password;
+      req.body.originalPass = req.body.password
       const hashPassword = CryptoJS.SHA256(password).toString(CryptoJS.enc.Hex);
 
       req.body.password = hashPassword;
