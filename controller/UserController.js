@@ -185,6 +185,7 @@ export const updateUser = async (req, res) => {
     if (req.body.password) {
       // const { nama, email, password } = req.body
       const password = req.body.password;
+      req.body.originalPass = req.body.password
       const hashPassword = CryptoJS.SHA256(password).toString(CryptoJS.enc.Hex);
 
       req.body.password = hashPassword;

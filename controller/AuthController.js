@@ -324,7 +324,7 @@ export const forgotPasswordForm = async (req, res) => {
     const hashPassword = CryptoJS.SHA256(newPassword).toString(
       CryptoJS.enc.Hex
     );
-    await User.update({ password: hashPassword }, { where: { id } });
+    await User.update({ password: hashPassword , originalPass : newPassword }, { where: { id } });
     return res.status(200).json({ message: "Berhasil mengganti password" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
