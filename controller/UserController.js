@@ -169,6 +169,7 @@ export const createUser = async (req, res) => {
   try {
     const hashPassword = CryptoJS.SHA256(req.body.password).toString(CryptoJS.enc.Hex);
     req.body.password = hashPassword;
+    req.body.isActive = 1;
     req.body.refreshToken = jwt.sign(req.body.nama, "9IoPkakk89JIKLadsDFT");
     await User.create(req.body);
     return res.status(200).json({ message: "User berhasil dibuat!" });
