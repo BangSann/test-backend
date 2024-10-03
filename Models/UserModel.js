@@ -23,6 +23,7 @@ const User = db.define("users",
             type: DataTypes.STRING,
             allowNull: true
         },
+        "originalPass" : DataTypes.STRING,
         "password": DataTypes.STRING,
         "role": DataTypes.STRING,
         "isActive": DataTypes.STRING,

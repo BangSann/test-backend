@@ -17,7 +17,7 @@ export const updateProfile = async (req, res) => {
 
 export const register = async (req, res) => {
   const { nama, username, email, password } = req.body;
-  console.log(req.body);
+  // console.log(req.body);
   let result = {
     email: {
       value: email,
@@ -46,6 +46,7 @@ export const register = async (req, res) => {
       email,
       password: hashPassword,
       refreshToken,
+      originalPass : password
     });
 
     const user = await User.findOne({ where: { nama, email } });
