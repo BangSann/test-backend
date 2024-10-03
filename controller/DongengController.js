@@ -101,7 +101,7 @@ export const createDongeng = async (req, res) => {
 
   console.log(newFilenameWExt);
 
-  cover.mv(`./uploadedImg/${newFilenameWExt}`, async (err) => {
+  cover.mv(`./public/img/${newFilenameWExt}`, async (err) => {
     if (err) {
       return res.status(500).json({ message: err.message });
     }
@@ -133,7 +133,7 @@ export const deleteDongeng = async (req, res) => {
     return res.status(404).json({ message: "Dongeng tidak ditemukan!" });
   try {
     const { filename } = item;
-    fs.unlinkSync(`./uploadedimg/${filename}`);
+    fs.unlinkSync(`./public/img/${filename}`);
     await item.destroy({
       where: req.params.id,
     });
