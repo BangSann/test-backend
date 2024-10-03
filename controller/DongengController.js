@@ -101,13 +101,13 @@ export const createDongeng = async (req, res) => {
 
   console.log(newFilenameWExt);
 
-  cover.mv(`./public/img/${newFilenameWExt}`, async (err) => {
+  cover.mv(`./uploadedImg/${newFilenameWExt}`, async (err) => {
     if (err) {
       return res.status(500).json({ message: err.message });
     }
     const path = `${req.protocol}://${req.get(
       "host"
-    )}/public/img/${newFilenameWExt}`; // Ganti dengan path ke file PDF Anda
+    )}/uploadedImg/${newFilenameWExt}`; // Ganti dengan path ke file PDF Anda
     try {
       await Dongeng.create({
         title: title,
@@ -133,7 +133,7 @@ export const deleteDongeng = async (req, res) => {
     return res.status(404).json({ message: "Dongeng tidak ditemukan!" });
   try {
     const { filename } = item;
-    fs.unlinkSync(`./public/img/${filename}`);
+    fs.unlinkSync(`./uploadedimg/${filename}`);
     await item.destroy({
       where: req.params.id,
     });
