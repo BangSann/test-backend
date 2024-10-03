@@ -59,6 +59,7 @@ import {
 import {
   getQuizByUserId,
   getRekapByForumId,
+  getRekapById,
   joinForumByToken,
   updateNilaiQuiz,
 } from "../controller/forumController.js";
@@ -82,6 +83,7 @@ router.get(
   getQuizByUserId
 );
 router.post("/api/update-nilai-quiz", accessValidation, updateNilaiQuiz);
+router.get("/api/get-rekap-quiz/:id", accessValidation, getRekapById);
 // Quiz - End
 
 // Soal
