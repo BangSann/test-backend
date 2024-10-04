@@ -84,6 +84,9 @@ export const updateNilaiQuiz = async (req, res) => {
       },
     });
     result.nilai = req.body.nilai;
+    result.nilaiPilihanGanda = req.body.nilaiPilihanGanda;
+    result.nilaiUraian = req.body.nilaiUraian;
+    result.nilaiUraian = req.body.nilaiUraian;
     await result.save();
     return res.status(200).json(result);
   } catch (error) {
