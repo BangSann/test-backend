@@ -34,6 +34,18 @@ const RekapNilaiModel = db.define(
       type: DataTypes.INTEGER,
       allowNull: true,
     },
+    nilaiPilihanGanda : {
+      type : DataTypes.INTEGER,
+      allowNull : true
+    },
+    nilaiUraian :{
+      type : DataTypes.INTEGER,
+      allowNull : true
+    },
+    nilaiMenulis : {
+      type : DataTypes.INTEGER,
+      allowNull : true
+    }
   },
   {
     freezeTableName: true,

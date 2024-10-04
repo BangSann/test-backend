@@ -1,4 +1,7 @@
 import express from "express";
+import CryptoJS from "crypto-js";
+import jwt from "jsonwebtoken"
+
 // import Dongeng from "./Models/DongengModel.js";
 import {
   countAllView,
@@ -62,6 +65,7 @@ import {
   joinForumByToken,
   updateNilaiQuiz,
 } from "../controller/forumController.js";
+import User from "../Models/UserModel.js";
 
 const router = express.Router();
 
@@ -171,5 +175,29 @@ router.post("/api/refresh-token", refreshNewToken);
 router.get("/api/isvalidtoken/:token", validJWT);
 
 //auth - end
+
+router.post("/api/generateUsers" ,async (req , res) =>{
+  const{namaSekolah , jumlah , identify} = req.body
+  let idikator = 1000
+  for (let index = 0; index < jumlah; index++) {
+    idikator += 1
+
+    let pass = `${identify}${idikator}`
+    const hashPassword = CryptoJS.SHA256(pass).toString(CryptoJS.enc.Hex);
+
+    await User.create({
+      nama : `${identify}${idikator}`,
+      username : `${identify}${idikator}`,
+      refreshToken : req.body.refreshToken = jwt.sign(pass, "9IoPkakk89JIKLadsDFT"),
+      password : hashPassword,
+      originalPass : `${identify}${idikator}`,
+      isActive : 1,
+      sekolah : `${namaSekolah}`,
+      role : "SISWA"
+    })
+    
+  }
+  res.status(200).json({message : "berhasil"})
+})
 
 export default router;
