@@ -86,7 +86,7 @@ router.get(
   accessValidation,
   getQuizByUserId
 );
-router.post("/api/update-nilai-quiz", accessValidation, updateNilaiQuiz);
+router.post("/api/update-nilai-quiz", updateNilaiQuiz);
 router.get("/api/get-rekap-quiz/:id", accessValidation, getRekapById);
 // Quiz - End
 
